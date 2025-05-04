@@ -14,16 +14,9 @@ const __dirname  = path.dirname(__filename);
 const app = express();
 
 // middleware --------------------------------------------------
-// Update CORS to allow requests from your frontend URL (GitHub Pages)
-const allowedOrigins = ['https://kiralosorata.github.io/kiosk-frontend/']; // Add your frontend URL here
+// Allow all origins for testing purposes
 app.use(cors({
-    origin: function(origin, callback) {
-        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-            callback(null, true);  // Allow the request
-        } else {
-            callback(new Error('Not allowed by CORS'));  // Block the request
-        }
-    }
+    origin: '*',  // This allows all origins (both http and https requests from any domain)
 }));
 
 app.use(express.json());            // ⬅ modern replacement for bodyParser.json()
