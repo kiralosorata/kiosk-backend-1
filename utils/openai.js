@@ -1,7 +1,7 @@
 import { OpenAI } from 'openai';
 // ⚠️  HARD-CODED FOR LOCAL TESTING ONLY  ⚠️
 const openai = new OpenAI({
-  apiKey: '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'
+  apiKey: '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'
 });
 
 /**
