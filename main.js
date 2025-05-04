@@ -15,7 +15,7 @@ const app = express();
 
 // middleware --------------------------------------------------
 // Update CORS to allow requests from your frontend URL (GitHub Pages)
-const allowedOrigins = ['https://kiralosorata.github.io']; // Add your frontend URL here
+const allowedOrigins = ['https://kiralosorata.github.io/kiosk-frontend/']; // Add your frontend URL here
 app.use(cors({
     origin: function(origin, callback) {
         if (!origin || allowedOrigins.indexOf(origin) !== -1) {
