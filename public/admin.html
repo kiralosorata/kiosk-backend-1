@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>ER Triage Dashboard</title>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; margin: 20px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    tr.status-waiting  { background: #fffae6; }
+    tr.status-ongoing  { background: #e6f7ff; }
+    tr.status-done     { background: #e8ffe6; }
+    button { margin-right: 4px; }
+  </style>
+</head>
+<body>
+  <h1>Current Patients</h1>
+  <table id="tbl">
+    <thead>
+      <tr>
+        <th>Name</th><th>Age</th><th>Complaint</th><th>ESI</th>
+        <th>Reason</th><th>Queue</th><th>Status</th><th>Vitals</th><th>Actions</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    async function load() {
+      const res  = await fetch('/api/admin/patients');
+      const data = await res.json();
+      const tbody = document.querySelector('#tbl tbody');
+      tbody.innerHTML = '';
+      data.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.className = 'status-' + p.status;
+        tr.innerHTML = `
+          <td>${p.name}</td>
+          <td>${p.age}</td>
+          <td>${p.complaint}</td>
+          <td>${p.esi}</td>
+          <td>${p.reason}</td>
+          <td>${p.queue}</td>
+          <td>${p.status}</td>
+          <td>
+            <button onclick="location.href='/vitals.html?id=${p.id}'">Vitals</button>
+          </td>
+          <td>
+            <button onclick="update('${p.id}','ongoing')">Ongoing</button>
+            <button onclick="update('${p.id}','done')">Done</button>
+            <button onclick="update('${p.id}','cleared')">Clear</button>
+            <button onclick="removePatient('${p.id}')">Delete</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function update(id, status) {
+      await fetch('/api/admin/patients/' + id + '/status', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status })
+      });
+      load();
+    }
+
+
+    async function removePatient(id) {
+      if (!confirm('Delete this record permanently?')) return;
+      await fetch('/api/admin/patients/' + id, { method: 'DELETE' });
+      load();
+    }
+
+    load();
+    setInterval(load, 5000);
+  </script>
+</body>
+</html>

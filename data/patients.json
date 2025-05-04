@@ -1,0 +1,62 @@
+[
+  {
+    "id": "34a1011e-b05d-4238-a39a-d3bbf22a7b61",
+    "name": "Matthew",
+    "age": "12",
+    "complaint": "Headache",
+    "painScale": "2",
+    "symptomChecker": "It hurts",
+    "duration": "this marks my 1st day",
+    "bodyPart": "stomach",
+    "esi": 5,
+    "reason": "The patient is a 12-year-old with a headache rated 2/10, which is mild. The symptom duration is only one day, and there are no concerning vital signs or additional symptoms reported.",
+    "queue": "E751",
+    "status": "waiting",
+    "createdAt": 1746276755758
+  },
+  {
+    "id": "d7f81217-ecf6-4509-a73c-755a9b6efa1a",
+    "name": "Matthew",
+    "age": "15",
+    "complaint": "Chest Pain",
+    "painScale": "4",
+    "symptomChecker": "i feel pain in my and i keep popping",
+    "duration": "3 days",
+    "bodyPart": "",
+    "esi": 3,
+    "reason": "Patient is a 15-year-old with chest pain rated 4/10, lasting for 3 days. This is a moderate concern that requires further evaluation but is not immediately life-threatening.",
+    "queue": "C667",
+    "status": "waiting",
+    "createdAt": 1746277779069
+  },
+  {
+    "id": "1c007ea0-1d3b-4df6-9e6b-1bccb64405d4",
+    "name": "Matthew",
+    "age": "23",
+    "complaint": "Allergic Reaction",
+    "painScale": "4",
+    "symptomChecker": "wewe",
+    "duration": "ewew",
+    "bodyPart": "ewe",
+    "esi": 3,
+    "reason": "The patient is 23 years old with a complaint of an allergic reaction, reporting a pain scale of 4. The symptoms are not clearly defined, and the duration is unspecified, but the pain level suggests a moderate concern. This warrants a level 3 ESI.",
+    "queue": "C333",
+    "status": "waiting",
+    "createdAt": 1746277805015
+  },
+  {
+    "id": "8ccdbe9d-5167-46b9-91ad-6269208eacdc",
+    "name": "Matthew",
+    "age": "23",
+    "complaint": "Allergic Reaction",
+    "painScale": "4",
+    "symptomChecker": "wewe",
+    "duration": "ewew",
+    "bodyPart": "ewe",
+    "esi": 3,
+    "reason": "The patient is 23 years old with a complaint of an allergic reaction, reporting a pain scale of 4. The symptoms are not clearly defined, and the duration is unspecified, but the pain level indicates a moderate concern. This situation requires further evaluation but is not immediately life-threatening.",
+    "queue": "C490",
+    "status": "waiting",
+    "createdAt": 1746277806448
+  }
+]

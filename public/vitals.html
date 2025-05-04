@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Enter Vitals</title>
+  <style>
+    /* ---------- layout ---------- */
+    html,body{margin:0;height:100%;font-family:Arial,Helvetica,sans-serif;}
+    .page{
+      height:100%; display:flex; justify-content:center; align-items:center;
+      background:linear-gradient(180deg,#6cc7c9 0%,#2f7f82 100%);
+    }
+    .card{
+      width:90%; max-width:700px; padding:40px 60px 80px;
+      background:transparent; border-radius:25px; box-sizing:border-box;
+      color:#fff; text-align:left; position:relative;
+    }
+    .card h1{margin-top:0;text-align:center;letter-spacing:1px;}
+
+    /* ---------- inputs ---------- */
+    label{display:block;font-weight:bold;margin:28px 0 8px;}
+    input{
+      width:100%; padding:22px 28px; border:none; border-radius:50px;
+      font-size:20px; box-sizing:border-box;
+    }
+
+    /* ---------- buttons ---------- */
+    .btn{
+      position:absolute; right:40px; bottom:30px;
+      background:#d3d3d3; color:#2f7f82; border:none; border-radius:30px;
+      font-size:22px; font-weight:bold; padding:14px 28px; cursor:pointer;
+      transition:background .2s;
+    }
+    .btn:hover{background:#c4c4c4;}
+
+    /* ---------- overlay popup ---------- */
+    .overlay{
+      position:fixed; inset:0; background:rgba(0,0,0,.4);
+      display:flex; justify-content:center; align-items:center; z-index:99;
+      visibility:hidden; opacity:0; transition:opacity .25s;
+    }
+    .overlay.show{visibility:visible; opacity:1;}
+
+    .popup{
+      width:80%; max-width:600px; padding:60px 40px;
+      background:#fff; border-radius:30px; text-align:center;
+      color:#2f7f82; box-sizing:border-box;
+    }
+    .popup h2{margin-top:0;font-size:36px;}
+    .popup button{
+      margin-top:40px; border:none; border-radius:30px;
+      background:#d3d3d3; color:#2f7f82; font-size:22px; padding:14px 34px;
+      cursor:pointer;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <form id="form" class="card">
+    <h1>INPUT&nbsp;VITAL&nbsp;SIGNS</h1>
+
+    <label for="bp">BLOOD PRESSURE</label>
+    <input id="bp"   autocomplete="off" required placeholder="e.g. 120/80" />
+
+    <label for="hr">HEART RATE</label>
+    <input id="hr"   type="number" min="0" required placeholder="bpm" />
+
+    <label for="rr">RESPIRATORY RATE</label>
+    <input id="rr"   type="number" min="0" required placeholder="rpm" />
+
+    <label for="temp">TEMPERATURE</label>
+    <input id="temp" type="number" step=".1" required placeholder="°C" />
+
+    <label for="spo2">OXYGEN SATURATION</label>
+    <input id="spo2" type="number" min="0" required placeholder="%" />
+
+    <button class="btn" type="submit">PROCEED</button>
+  </form>
+</div>
+
+<!-- popup template -->
+<div id="ovl" class="overlay">
+  <div class="popup">
+    <h2 id="resultTxt"></h2>
+    <p id="reasonTxt"></p>
+    <button onclick="location.href='/admin'">OK</button>
+  </div>
+</div>
+
+<script>
+  // ------ helper: read ?id=... from URL ------
+  function getPatientId() {
+    const m = location.search.match(/[?&]id=([^&]+)/);
+    if (!m) alert('Missing patient id in URL');
+    return decodeURIComponent(m[1] || '');
+  }
+
+  /* ------------- form submit ------------- */
+  document.getElementById('form').onsubmit = async e => {
+    e.preventDefault();
+    const id   = getPatientId();
+    const bp   = document.getElementById('bp').value.trim();
+    const hr   = +document.getElementById('hr').value;
+    const rr   = +document.getElementById('rr').value;
+    const temp = +document.getElementById('temp').value;
+    const spo2 = +document.getElementById('spo2').value;
+
+    const res = await fetch(`/api/admin/patients/${id}/vitals`,{
+      method :'PATCH',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({ bp, hr, rr, temp, spo2 })
+    });
+    if (!res.ok){
+        const msg = await res.text();           // <-- see server message
+        alert('Error: ' + msg);
+        return;
+    }
+    const data = await res.json();
+    // ---- show result popup ----
+    document.getElementById('resultTxt').textContent =
+      `ESI LEVEL ${data.esi}`;
+    document.getElementById('reasonTxt').textContent = data.reason;
+    document.getElementById('ovl').classList.add('show');
+  };
+</script>
+</body>
+</html>
